@@ -10,7 +10,7 @@ export interface VenueAttrs {
 
 export interface VenueCreationAttrs extends Optional<VenueAttrs, 'id'> {}
 
-export class Venue extends Model<VenueAttrs, VenueCreationAttrs> implements VenueAttrs {
+export class Location extends Model<VenueAttrs, VenueCreationAttrs> implements VenueAttrs {
     declare public id: number; // id места проведения
     declare public name: string; // название
     declare public capacity: number; // вместимость

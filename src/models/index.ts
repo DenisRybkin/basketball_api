@@ -3,4 +3,4 @@ export { Team } from "./team";
 export { Tournament } from "./tournament";
 export { Game } from "./game";
 export { TeamInTournament } from "./teamInTournament";
-export { Venue } from "./venue";
+export { Location } from "./location";

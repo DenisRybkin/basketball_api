@@ -1,5 +1,5 @@
 import {DataTypes} from "sequelize";
-import {Team, User, Game, Tournament, TeamInTournament,Venue} from "../models";
+import {Team, User, Game, Tournament, TeamInTournament,Location} from "../models";
 import {db} from "./db";
 
 
@@ -23,10 +23,7 @@ export async function defineModels() {
         },
         userId: {
             type: DataTypes.INTEGER,
-            // allowNull: false,
-            // defaultValue : 0
-            primaryKey: true,
-            // unique : true
+            // primaryKey: true,
         },
         createdAt: {type: DataTypes.DATE},
         updatedAt: {type: DataTypes.DATE}
@@ -44,7 +41,7 @@ export async function defineModels() {
         },
         userId : {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            // primaryKey: true
         },
         address: {
             type: DataTypes.STRING,
@@ -126,12 +123,12 @@ export async function defineModels() {
         team1Id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true
+            // primaryKey: true
         },
         team2Id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true
+            // primaryKey: true
         },
         countPointsTeam1 : {
             type: DataTypes.INTEGER,
@@ -144,7 +141,7 @@ export async function defineModels() {
         winningTeamId : {
             type: DataTypes.INTEGER,
             allowNull: true,
-            primaryKey: true
+            // primaryKey: true
         },
         dateEvent : {
             type: DataTypes.STRING,
@@ -153,12 +150,12 @@ export async function defineModels() {
         tournamentId : {
             type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true
+            // primaryKey: true
         },
-        venueId : {
+        locationId : {
             type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true
+            // primaryKey: true
         }
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "game"});
 
@@ -170,11 +167,11 @@ export async function defineModels() {
         },
         teamId : {
             type: DataTypes.INTEGER,
-            primaryKey : true
+            // primaryKey : true
         },
         tournamentId : {
             type: DataTypes.INTEGER,
-            primaryKey : true
+            // primaryKey : true
         },
         countWins : {
             type: DataTypes.INTEGER,
@@ -198,7 +195,7 @@ export async function defineModels() {
         }
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "teamInTournament"});
 
-    await Venue.init({
+    await Location.init({
         id : {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -220,5 +217,5 @@ export async function defineModels() {
             type: DataTypes.STRING,
             allowNull: false
         }
-    }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "venue"})
+    }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "location"})
 }

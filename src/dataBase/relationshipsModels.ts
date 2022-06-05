@@ -1,31 +1,31 @@
-import {Team, User,Game, TeamInTournament,Tournament,Venue} from "../models";
-import { db } from "./db"
-import {DataTypes, Model} from "sequelize";
+import {Team, User,Game, TeamInTournament,Tournament,Location} from "../models";
 
 
 // описываю связи моделей
 export async function relatingModels () {
 
-   await Team.hasMany(User, { foreignKey : 'userId'});
+   await Team.hasMany(User, { foreignKey : "teamId"});
    await User.belongsTo(Team, { foreignKey : "teamId"});
 
-   await User.hasMany(Tournament, {foreignKey : 'id'});
+   await User.hasMany(Tournament, {foreignKey : 'userId'});
    await Tournament.belongsTo(User, {foreignKey : 'userId'});
 
-   await Team.hasMany(TeamInTournament, { foreignKey : 'id'});
+   await Team.hasMany(TeamInTournament,{ foreignKey : 'teamId'});
    await TeamInTournament.belongsTo(Team, { foreignKey : 'teamId'});
 
-   await Tournament.hasMany(TeamInTournament, { foreignKey : 'id'});
-   await TeamInTournament.belongsTo(Tournament, { foreignKey : 'tournamentId'});
+   await Tournament.hasMany(TeamInTournament, { foreignKey : 'tournamentId' });
+   await TeamInTournament.belongsTo(Tournament, { foreignKey : 'tournamentId' });
 
-   await Tournament.hasMany(Game, { foreignKey : 'id'});
+   await Tournament.hasMany(Game, { foreignKey : 'tournamentId'});
    await Game.belongsTo(Tournament, { foreignKey : 'tournamentId'});
 
-   await TeamInTournament.hasMany(Game, { foreignKey : 'id'});
+   await TeamInTournament.hasMany(Game, { foreignKey : 'team1Id'});
    await Game.belongsTo(TeamInTournament, { foreignKey : 'team1Id'});
+   await TeamInTournament.hasMany(Game, { foreignKey : 'team2Id'});
    await Game.belongsTo(TeamInTournament, { foreignKey : 'team2Id'});
+   await TeamInTournament.hasMany(Game, { foreignKey : 'winningTeamId'});
    await Game.belongsTo(TeamInTournament, { foreignKey : 'winningTeamId'});
 
-   await Venue.hasMany(Game,{ foreignKey : 'id'});
-   await Game.belongsTo(Venue, { foreignKey : 'venueId'});
+   await Location.hasMany(Game,{ foreignKey : 'locationId'});
+   await Game.belongsTo(Location, { foreignKey : 'locationId'});
 }
