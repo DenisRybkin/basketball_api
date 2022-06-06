@@ -16,8 +16,9 @@ export interface UserAttrs {
     gender : UserGenderType;
     teamId : number;
     role : number;
-    createdAt : Date;
-    updatedAt : Date;
+    isActivated : boolean;
+    // refreshToken : string;
+    // activationLink : string;
 }
 
 export interface UserCreationAttrs extends Optional<UserAttrs, 'id'> {}
@@ -36,6 +37,9 @@ export class User extends Model<UserAttrs, UserCreationAttrs> implements UserAtt
     declare public gender : UserGenderType; // пол : number ( 0 - мужчина, 1 - женщина )
     declare public teamId : number; // id команды
     declare public role : number // тип пользователя : number (по дэфолту - 0) ( 0 - гость, 1 - участник, 2 - организотор, 3 - администратор )
+    declare public isActivated : boolean; // для авторизации
+    // declare public refreshToken : string;
+    // declare public activationLink : string; //
     declare readonly createdAt : Date; // дата создания, при создании не указывать
     declare readonly updatedAt : Date; // дата измненения, при создании не указывать
 }

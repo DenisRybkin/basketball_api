@@ -1,4 +1,4 @@
-import {Team, User,Game, TeamInTournament,Tournament,Location} from "../models";
+import {Team, User,Game, TeamInTournament,Tournament,Location,UserToken} from "../models";
 
 
 // описываю связи моделей
@@ -28,4 +28,8 @@ export async function relatingModels () {
 
    await Location.hasMany(Game,{ foreignKey : 'locationId'});
    await Game.belongsTo(Location, { foreignKey : 'locationId'});
+
+   await User.hasMany(UserToken, { foreignKey : 'userId'});
+   await UserToken.belongsTo(User, { foreignKey : 'userId'});
+
 }

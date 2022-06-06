@@ -4,3 +4,4 @@ export { Tournament } from "./tournament";
 export { Game } from "./game";
 export { TeamInTournament } from "./teamInTournament";
 export { Location } from "./location";
+export { UserToken } from "./userToken";

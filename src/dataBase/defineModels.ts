@@ -1,5 +1,5 @@
 import {DataTypes} from "sequelize";
-import {Team, User, Game, Tournament, TeamInTournament,Location} from "../models";
+import {Team, User, Game, Tournament, TeamInTournament,Location,UserToken} from "../models";
 import {db} from "./db";
 
 
@@ -108,8 +108,16 @@ export async function defineModels() {
             type: DataTypes.INTEGER,
             allowNull: true
         },
-        createdAt: {type: DataTypes.DATE},
-        updatedAt: {type: DataTypes.DATE}
+        isActivated : {
+            type : DataTypes.BOOLEAN,
+            allowNull : false,
+            defaultValue : false
+        },
+        // refreshToken : {
+        //     type : DataTypes.STRING
+        // },
+        // createdAt: {type: DataTypes.DATE},
+        // updatedAt: {type: DataTypes.DATE}
 
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "user"});
 
@@ -217,5 +225,30 @@ export async function defineModels() {
             type: DataTypes.STRING,
             allowNull: false
         }
-    }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "location"})
+    }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "location"});
+
+    UserToken.init({
+        id : {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        refreshToken: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        accessToken: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        isActivated: {
+            type : DataTypes.BOOLEAN,
+            allowNull: true,
+            defaultValue : false
+        },
+    },{sequelize: db, createdAt: true, updatedAt: true, tableName: "userToken"})
 }

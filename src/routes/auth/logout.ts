@@ -3,17 +3,17 @@ import { RouteHandler } from "../../interfaces/routeHandler";
 import { HttpTypes } from "../../enums/httpTypes";
 import {userService} from "../../services/user/userService";
 
-export const userSignup: RouteHandler = {
-    url: "/signup",
+export const authLogout : RouteHandler = {
+    url: "/logout",
     requestType: HttpTypes.post,
-    handler: async (req, res) => {
+    handler: async (req, res,next) => {
         try {
-            const body = req.body;
-            const newUser = await userService.signup(body);
-            console.log(newUser,1111);
-            res.json(newUser);
+            const {refreshToken} = req.cookies;
+            const token = await userService.logout(refreshToken);
+            res.clearCookie("refreshToken");
+            res.json(token)
         } catch (e) {
-            console.log(e.message);
+            next(e.message);
         }
     }
 }

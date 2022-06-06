@@ -2,21 +2,22 @@
 import { RouteHandler } from "../../interfaces/routeHandler";
 import { HttpTypes } from "../../enums/httpTypes";
 import {userService} from "../../services/user/userService";
+import {ApiError} from "../../exceptions/apiError";
+import {log} from "util";
 
-export const userSignup: RouteHandler = {
+export const userUpdate: RouteHandler = {
     url: "/user",
     requestType: HttpTypes.put,
-    handler: async (req, res) => {
+    handler: async (req, res,next) => {
         try {
-            const body = req.body;
-            // @ts-ignore
-            const id : string = req.params.id;
-            if(!id) throw Error("нема айдишника");
-            // @ts-ignore
-            userService.update({});
-            res.json("запрос работает!")
+
+            const newUser = req.body;
+            console.log(1,newUser,newUser.id);
+            if(!newUser.id) ApiError.BadRequest("нема айдишника");
+            const updatedId =  await userService.update(+newUser.id,newUser);
+            res.json(updatedId)
         } catch (e) {
-            console.log(e.message);
+            next(e);
         }
     }
 }

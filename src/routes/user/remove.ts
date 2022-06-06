@@ -2,21 +2,19 @@
 import { RouteHandler } from "../../interfaces/routeHandler";
 import { HttpTypes } from "../../enums/httpTypes";
 import {userService} from "../../services/user/userService";
+import {ApiError} from "../../exceptions/apiError";
 
-export const userSignup: RouteHandler = {
+export const userRemove: RouteHandler = {
     url: "/user",
     requestType: HttpTypes.delete,
-    handler: async (req, res) => {
+    handler: async (req, res,next) => {
         try {
-            const body = req.body;
-            // @ts-ignore
-            const id : string = req.params.id;
-            if(!id) throw Error("нема айдишника");
-            // @ts-ignore
-            userService.remove({});
-            res.json("запрос работает!")
+            const deletingUserId = req.body.id;
+            if(!deletingUserId)  ApiError.BadRequest("нема айдишника");
+            const deletedId = userService.remove(+deletingUserId);
+            res.json("успех, бро");
         } catch (e) {
-            console.log(e.message);
+            next(e);
         }
     }
 }
