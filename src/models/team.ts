@@ -1,11 +1,11 @@
 import {Model, Optional} from "sequelize";
+import {User} from "./user";
 
 export interface TeamAttrs {
     id : number,
     name : string;
     address : string;
-    createdAt : Date;
-    updatedAt : Date;
+    participants ?: User[];
 }
 
 export interface TeamCreationAttrs extends Optional<TeamAttrs, 'id'> {}

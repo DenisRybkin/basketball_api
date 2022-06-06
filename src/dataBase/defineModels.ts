@@ -20,9 +20,7 @@ export async function defineModels() {
         address: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        createdAt: {type: DataTypes.DATE},
-        updatedAt: {type: DataTypes.DATE}
+        }
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "team"});
 
     await Tournament.init({
@@ -153,6 +151,7 @@ export async function defineModels() {
         locationId : {
             type: DataTypes.INTEGER,
             allowNull: false,
+            // primaryKey: true
         }
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "game"});
 

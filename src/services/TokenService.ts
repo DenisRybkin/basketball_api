@@ -1,12 +1,12 @@
 import {Request} from 'express';
-import {UserToken} from "../../models";
-import {TokensDto} from "../../dtos/TokensDto";
+import {UserToken} from "../models";
+import {TokensDto} from "../dtos/TokensDto";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import {UserTokenDto} from "../../dtos/UserTokenDto";
+import {UserTokenDto} from "../dtos/UserTokenDto";
 
 
-class TokenService {
+class TokenService{
 
 
     getToken (req: Request): string | null {
@@ -25,7 +25,6 @@ class TokenService {
 
     async saveToken (userId : number, refreshToken : string) : Promise<UserToken> {
         const tokenData = await UserToken.findOne({ where: { userId : +userId } });
-
         if (tokenData) {
             tokenData.refreshToken = refreshToken;
             return tokenData.save();

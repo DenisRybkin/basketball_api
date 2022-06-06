@@ -1,10 +1,10 @@
-import {User} from "../../models";
+import {User} from "../models";
 import bcrypt from 'bcrypt';
-import {tokenService} from "../tokenService/tokenService";
-import {UserTokenDto} from "../../dtos/UserTokenDto";
-import {TokensDto} from "../../dtos/TokensDto";
-import {UserAttrs} from "../../models/user";
-import {ApiError} from "../../exceptions/apiError";
+import {tokenService} from "./TokenService";
+import {UserTokenDto} from "../dtos/UserTokenDto";
+import {TokensDto} from "../dtos/TokensDto";
+import {UserAttrs} from "../models/user";
+import {ApiError} from "../exceptions/apiError";
 
 class UserService {
 
@@ -19,8 +19,8 @@ class UserService {
         return await User.findAll();
     };
 
-    async getById (id ?: string) : Promise<User | null> {
-        return  await User.findByPk(+id);
+    async getById (id ?: number) : Promise<User | null> {
+        return await User.findByPk(+id);
     };
 
 
@@ -52,7 +52,9 @@ class UserService {
     };
 
     async login (email : string, password : string) : Promise<{user : User , tokens : TokensDto}> {
+        console.log(email);
         const candidate = await User.findOne({where : { email }});
+        console.log(!candidate);
         if(!candidate) throw ApiError.BadRequest(`пользователь с email ${email} не был найден`)
 
         const isPassEqual = bcrypt.compare(password,candidate.password);
