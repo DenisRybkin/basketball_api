@@ -4,7 +4,6 @@ export interface TeamAttrs {
     id : number,
     name : string;
     address : string;
-    userId : number;
     createdAt : Date;
     updatedAt : Date;
 }
@@ -15,7 +14,6 @@ export class Team extends Model<TeamAttrs, TeamCreationAttrs> implements TeamAtt
     declare  id : number; // id
     declare public name : string; // название команды
     declare public address : string; // адресс команды
-    declare public userId : number; // id пользователя
     declare public readonly createdAt : Date; // дата создания, при создании не указывать
     declare public readonly updatedAt : Date; // дата измненения, при создании не указывать
 }

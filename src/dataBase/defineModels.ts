@@ -21,10 +21,6 @@ export async function defineModels() {
             type: DataTypes.STRING,
             allowNull: false
         },
-        userId: {
-            type: DataTypes.INTEGER,
-            // primaryKey: true,
-        },
         createdAt: {type: DataTypes.DATE},
         updatedAt: {type: DataTypes.DATE}
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "team"});
@@ -41,7 +37,7 @@ export async function defineModels() {
         },
         userId : {
             type: DataTypes.INTEGER,
-            // primaryKey: true
+            allowNull: false
         },
         address: {
             type: DataTypes.STRING,
@@ -60,16 +56,17 @@ export async function defineModels() {
         firstName: {
             type: DataTypes.STRING,
             defaultValue: "",
-            allowNull: true
+            allowNull: false
         },
         middleName: {
             type: DataTypes.STRING,
-            allowNull: true
+            defaultValue: "",
+            allowNull: false
         },
         lastName: {
             type: DataTypes.STRING,
             defaultValue: "",
-            allowNull: true
+            allowNull: false
         },
         email: {
             type: DataTypes.STRING,
@@ -102,22 +99,17 @@ export async function defineModels() {
         },
         amplua : {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false
         },
         gender : {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false
         },
         isActivated : {
             type : DataTypes.BOOLEAN,
             allowNull : false,
             defaultValue : false
         },
-        // refreshToken : {
-        //     type : DataTypes.STRING
-        // },
-        // createdAt: {type: DataTypes.DATE},
-        // updatedAt: {type: DataTypes.DATE}
 
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "user"});
 
@@ -148,8 +140,7 @@ export async function defineModels() {
         },
         winningTeamId : {
             type: DataTypes.INTEGER,
-            allowNull: true,
-            // primaryKey: true
+            allowNull: false,
         },
         dateEvent : {
             type: DataTypes.STRING,
@@ -158,12 +149,10 @@ export async function defineModels() {
         tournamentId : {
             type: DataTypes.INTEGER,
             allowNull: false,
-            // primaryKey: true
         },
         locationId : {
             type: DataTypes.INTEGER,
             allowNull: false,
-            // primaryKey: true
         }
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "game"});
 
@@ -175,11 +164,11 @@ export async function defineModels() {
         },
         teamId : {
             type: DataTypes.INTEGER,
-            // primaryKey : true
+            allowNull: false
         },
         tournamentId : {
             type: DataTypes.INTEGER,
-            // primaryKey : true
+            allowNull: false
         },
         countWins : {
             type: DataTypes.INTEGER,

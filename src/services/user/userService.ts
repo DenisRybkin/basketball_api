@@ -20,7 +20,7 @@ class UserService {
     };
 
     async getById (id ?: string) : Promise<User | null> {
-        return  await User.findOne({ where: { id : +id } });
+        return  await User.findByPk(+id);
     };
 
 

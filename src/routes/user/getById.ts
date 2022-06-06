@@ -12,8 +12,9 @@ export const userByIdGet: RouteHandler = {
         try {
             const id : string = req.params.id
             if(!id) throw ApiError.BadRequest("нема айдишника")
-            const users = userService.getById(id);
-            res.json(users);
+            const user = await userService.getById(id);
+            if(!user) throw ApiError.NotFound();
+            res.json(user);
         } catch (e) {
             next(e);
         }
