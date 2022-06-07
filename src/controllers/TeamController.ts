@@ -19,9 +19,9 @@ class TeamController {
         try {
             const id : number = getIdFromParams(req);
             if(!id) throw ApiError.BadRequest("нема айдишника")
-            const user = await teamService.getById(id);
-            if(!user) throw ApiError.NotFound();
-            res.json(user);
+            const team = await teamService.getById(id);
+            if(!team) throw ApiError.NotFound();
+            res.json(team);
         } catch (e) {
             next(e);
         }
@@ -52,9 +52,9 @@ class TeamController {
 
     async remove (req : Request, res : Response, next : NextFunction) {
         try {
-            const deletingUserId = getIdFromReq(req);
-            if(!deletingUserId)  ApiError.BadRequest("нема айдишника");
-            const deletedId = await teamService.remove(+deletingUserId);
+            const deletingTeamId = getIdFromReq(req);
+            if(!deletingTeamId)  ApiError.BadRequest("нема айдишника");
+            const deletedId = await teamService.remove(+deletingTeamId);
             res.json(deletedId);
         } catch (e) {
             next(e);

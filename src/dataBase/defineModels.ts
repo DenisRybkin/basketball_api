@@ -35,14 +35,12 @@ export async function defineModels() {
         },
         userId : {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         address: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        createdAt: {type: DataTypes.DATE},
-        updatedAt: {type: DataTypes.DATE}
+        }
     }, {sequelize: db, createdAt: true, updatedAt: true, tableName: "tournament"})
 
     await User.init({

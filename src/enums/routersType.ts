@@ -17,3 +17,11 @@ export enum TeamRoute {
     update = "/team",
     remove = "/team"
 }
+
+export enum TournamentRoute {
+    getAll = "/tournament",
+    getById = "/tournament/:id",
+    create = "/tournament",
+    update = "/tournament",
+    remove = "/tournament"
+}

@@ -1,12 +1,14 @@
 import {Model, Optional} from "sequelize";
+import {Game} from "./game";
 
 export interface TournamentAttrs {
     id : number,
     name : string;
     address : string;
     userId : number;
-    createdAt : Date;
-    updatedAt : Date;
+    games ?: Game[];
+    // createdAt : Date;
+    // updatedAt : Date;
 }
 
 export interface TournamentCreationAttrs extends Optional<TournamentAttrs, 'id'> {}

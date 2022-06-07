@@ -1,41 +1,54 @@
-import express from "express"
+import express, { Application } from "express"
 import { initDb } from './dataBase/db'
 import {AuthRouter, UserRouter, TeamRouter} from "./routes";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv"
 import {ApiErrorMiddleware} from "./middlewares/apiErrorMiddleware";
+import {config} from "./config";
+import {TournamentRouter} from "./routes/TournamentRouter";
 
-export const app = express();
-const port = process.env.PORT || 8080; // default port to listen
+export class App {
+    private static _instance: App;
+    private _app: Application;
 
-app.use(cors());
-app.use(express.json());
-app.use(cookieParser());
-app.use("/api", AuthRouter);
-app.use("/api", UserRouter);
-app.use("/api", TeamRouter)
-app.use(ApiErrorMiddleware)
-dotenv.config()
+    private constructor(
+        private readonly _port: number = config.PORT,
+        private readonly _prefix: string = config.API_PREFIX,
+    ) {
+        this._app = express();
+        this.initMiddlewares();
+        this.initRoutes();
+        this.initLastMiddlewares();
+    }
 
-// const routeHandlerMapper: Partial<Record<HttpTypes, (v: RouteHandler) => void>> = {
-//     [HttpTypes.get]: (v) => app.get(v.url, v.handler),
-//     [HttpTypes.post]: (v) => app.post(v.url, v.handler),
-//     [HttpTypes.put]: (v) => app.put(v.url, v.handler),
-//     [HttpTypes.patch]: (v) => app.patch(v.url, v.handler),
-//     [HttpTypes.delete]: (v) => app.delete(v.url, v.handler),
-// }
+    public static get Instance(): App {
+        return this._instance || (this._instance = new this());
+    };
 
-// routeHandlers.forEach(x => routeHandlerMapper[x.requestType](x));
-// define a route handler for the default home page
-app.get("/", async (req, res) => {
-    res.send("Hello world!");
-});
+    private initMiddlewares(): void {
+        this._app.use(express.json());
+        this._app.use(cors());
+        this._app.use(cookieParser());
+    };
 
-console.log(process.env.JWT_ACCESS_SECRET);
+    private initLastMiddlewares(): void {
+        this._app.use(ApiErrorMiddleware);
+    };
 
-// start the Express server
-app.listen(port, async () => {
-    await initDb()
-    console.log(`server started at http://localhost:${ port }`);
-});
+    private initRoutes(): void {
+        this._app.use(`${this._prefix}`, UserRouter);
+        this._app.use(`${this._prefix}`, TeamRouter);
+        this._app.use(`${this._prefix}`, AuthRouter);
+        this._app.use(`${this._prefix}`, TournamentRouter);
+    };
+
+    public async init(): Promise<void> {
+        await initDb();
+        this._app.listen(this._port, async () => {
+            console.log(`server started at http://localhost:${ this._port }`);
+        })
+    };
+}
+
+const app = App.Instance;
+app.init();

@@ -4,7 +4,7 @@ import {Team, User,Game, TeamInTournament,Tournament,Location,UserToken} from ".
 // описываю связи моделей
 export async function relatingModels () {
 
-   await Team.hasMany(User, { foreignKey : "teamId"});
+   await Team.hasMany(User, { foreignKey : "teamId", as : "participants"});
    await User.belongsTo(Team, { foreignKey : "teamId"});
 
    await User.hasMany(Tournament, {foreignKey : 'userId'});
@@ -16,13 +16,15 @@ export async function relatingModels () {
    await Tournament.hasMany(TeamInTournament, { foreignKey : 'tournamentId' });
    await TeamInTournament.belongsTo(Tournament, { foreignKey : 'tournamentId' });
 
-   await Tournament.hasMany(Game, { foreignKey : 'tournamentId'});
+   await Tournament.hasMany(Game, { foreignKey : 'tournamentId', as : 'games'});
    await Game.belongsTo(Tournament, { foreignKey : 'tournamentId'});
 
    await TeamInTournament.hasMany(Game, { foreignKey : 'team1Id'});
    await Game.belongsTo(TeamInTournament, { foreignKey : 'team1Id'});
+
    await TeamInTournament.hasMany(Game, { foreignKey : 'team2Id'});
    await Game.belongsTo(TeamInTournament, { foreignKey : 'team2Id'});
+
    await TeamInTournament.hasMany(Game, { foreignKey : 'winningTeamId'});
    await Game.belongsTo(TeamInTournament, { foreignKey : 'winningTeamId'});
 

@@ -2,21 +2,19 @@ import {Request} from 'express';
 import {UserToken} from "../models";
 import {TokensDto} from "../dtos/TokensDto";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import {UserTokenDto} from "../dtos/UserTokenDto";
+import {config} from "../config";
 
 
 class TokenService{
-
 
     getToken (req: Request): string | null {
         return  req.get('Authorization')?.split(' ')[1];
     }
 
     generateTokens (payload: UserTokenDto, expiresIn : string = '24h') : TokensDto  {
-        dotenv.config();
-        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn});
-        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn : '30d'});
+        const accessToken = jwt.sign(payload, config.JWT_ACCESS_SECRET, { expiresIn});
+        const refreshToken = jwt.sign(payload, config.JWT_REFRESH_SECRET, { expiresIn : '30d'});
         return {
             accessToken,
             refreshToken
@@ -33,18 +31,16 @@ class TokenService{
     }
 
     validateAccessToken(token : string) : string | jwt.JwtPayload | null {
-        dotenv.config();
         try {
-            return jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+            return jwt.verify(token, config.JWT_ACCESS_SECRET)
         } catch (e) {
             return null;
         }
     };
 
     validateRefreshToken(token : string) : string | jwt.JwtPayload | null {
-        dotenv.config();
         try {
-            return jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+            return jwt.verify(token, config.JWT_REFRESH_SECRET)
         } catch (e) {
             return null;
         }
