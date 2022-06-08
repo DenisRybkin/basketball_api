@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import {ApiErrorMiddleware} from "./middlewares/apiErrorMiddleware";
 import {config} from "./config";
 import {TournamentRouter} from "./routes/TournamentRouter";
+import {LocationRouter} from "./routes/LocationRouter";
 
 export class App {
     private static _instance: App;
@@ -40,6 +41,7 @@ export class App {
         this._app.use(`${this._prefix}`, TeamRouter);
         this._app.use(`${this._prefix}`, AuthRouter);
         this._app.use(`${this._prefix}`, TournamentRouter);
+        this._app.use(`${this._prefix}`, LocationRouter)
     };
 
     public async init(): Promise<void> {

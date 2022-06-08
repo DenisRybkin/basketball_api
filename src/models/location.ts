@@ -1,16 +1,18 @@
 import {Model, Optional} from "sequelize";
+import {Game} from "./game";
 
-export interface VenueAttrs {
+export interface LocationAttrs {
     id : number,
     name : string;
+    games?: Game[]
     capacity : number;
     address : string;
     contact : string;
 }
 
-export interface VenueCreationAttrs extends Optional<VenueAttrs, 'id'> {}
+export interface LocationCreationAttrs extends Optional<LocationAttrs, 'id'> {}
 
-export class Location extends Model<VenueAttrs, VenueCreationAttrs> implements VenueAttrs {
+export class Location extends Model<LocationAttrs, LocationCreationAttrs> implements LocationAttrs {
     declare public id: number; // id места проведения
     declare public name: string; // название
     declare public capacity: number; // вместимость

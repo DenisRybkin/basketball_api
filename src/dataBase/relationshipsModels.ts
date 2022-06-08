@@ -28,7 +28,7 @@ export async function relatingModels () {
    await TeamInTournament.hasMany(Game, { foreignKey : 'winningTeamId'});
    await Game.belongsTo(TeamInTournament, { foreignKey : 'winningTeamId'});
 
-   await Location.hasMany(Game,{ foreignKey : 'locationId'});
+   await Location.hasMany(Game,{ foreignKey : 'locationId', as : 'games'});
    await Game.belongsTo(Location, { foreignKey : 'locationId'});
 
    await User.hasMany(UserToken, { foreignKey : 'userId'});

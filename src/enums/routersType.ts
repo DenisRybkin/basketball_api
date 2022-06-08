@@ -1,3 +1,5 @@
+import {LocationRouter} from "../routes/LocationRouter";
+
 export enum AuthRoute {
     login = "/login",
     signup = "/signup",
@@ -24,4 +26,11 @@ export enum TournamentRoute {
     create = "/tournament",
     update = "/tournament",
     remove = "/tournament"
+}
+export enum LocationRoute {
+    getAll = "/location",
+    getById = "/location/:id",
+    create = "/location",
+    update = "/location",
+    remove = "/location"
 }
