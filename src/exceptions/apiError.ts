@@ -16,6 +16,10 @@ export class ApiError extends Error {
         return new ApiError(400, message, errors )
     }
 
+    static Forbidden() {
+        return new ApiError(403,"Нема прав, сори, ты походу негр")
+    }
+
     static NotFound () {
         return new ApiError(404, "По данному запросу ничего не найдено" );
     }

@@ -8,8 +8,8 @@ import {ApiError} from "../exceptions/apiError";
 
 class UserService {
 
-    async refreshToken (email : string, firstName : string, userId : number) : Promise<TokensDto> {
-        const userTokenDto = new UserTokenDto(email,firstName)
+    async refreshToken (email : string, firstName : string,role : number, userId : number) : Promise<TokensDto> {
+        const userTokenDto = new UserTokenDto(email,firstName,role)
         const tokens = tokenService.generateTokens({...userTokenDto});
         await tokenService.saveToken(userId, tokens.refreshToken);
         return tokens;
@@ -37,37 +37,34 @@ class UserService {
     };
 
     async signup (userAttrs : UserAttrs) : Promise<{user : User , tokens : TokensDto}> {
-        const { password, email, firstName } = userAttrs;
+        const { password, email, firstName, role } = userAttrs;
 
         const candidate = await User.findOne({where : { email }})
         if(candidate) throw ApiError.BadRequest(`'User with this email already exists'`)
 
         const hashPassword = await bcrypt.hash(password, 3);
 
-        const user = await User.create({...userAttrs, password : hashPassword});
+        const user = await User.create({...userAttrs, password : hashPassword, role : userAttrs.role ?? 1});
 
-        const tokens = await this.refreshToken(email,firstName,user.id);
-
+        const tokens = await this.refreshToken(email,firstName,role,user.id);
         return {user, tokens};
     };
 
     async login (email : string, password : string) : Promise<{user : User , tokens : TokensDto}> {
-        console.log(email);
         const candidate = await User.findOne({where : { email }});
-        console.log(!candidate);
         if(!candidate) throw ApiError.BadRequest(`пользователь с email ${email} не был найден`)
 
         const isPassEqual = bcrypt.compare(password,candidate.password);
         if(!isPassEqual) throw ApiError.BadRequest(`неверный пароль`);
 
-        const tokens = await this.refreshToken(email,candidate.firstName,candidate.id);
+        const tokens = await this.refreshToken(email,candidate.firstName,candidate.id,candidate.role);
 
         return {user : candidate, tokens};
     };
 
     async logout (refreshToken : string) : Promise<number> {
         return await tokenService.removeToken(refreshToken);
-    }
+    };
 
     async refresh(refreshToken : string) {
         if(!refreshToken) throw ApiError.UnauthorizedError();
@@ -78,7 +75,7 @@ class UserService {
 
         const user = await User.findByPk(userData.userId);
 
-        const tokens = await this.refreshToken(user.email,user.firstName,user.id);
+        const tokens = await this.refreshToken(user.email,user.firstName,user.id,user.role);
 
         return {user, tokens};
     }

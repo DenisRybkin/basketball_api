@@ -89,7 +89,7 @@ export async function defineModels() {
             allowNull: true
         },
         role: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             defaultValue: 0,
             allowNull: false
         },

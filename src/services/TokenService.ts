@@ -4,6 +4,7 @@ import {TokensDto} from "../dtos/TokensDto";
 import jwt from "jsonwebtoken";
 import {UserTokenDto} from "../dtos/UserTokenDto";
 import {config} from "../config";
+import {UserRoles} from "../constants/userRoles";
 
 
 class TokenService{
@@ -20,6 +21,13 @@ class TokenService{
             refreshToken
         }
     };
+
+    checkRole (token : string, expectedRole : string) {
+        const decoded = jwt.verify(token, config.JWT_ACCESS_SECRET);
+        // @ts-ignore
+        return (UserRoles.find((item) => item.role === decoded.role).level >= UserRoles.find((item) => item.role === expectedRole).level)
+    }
+
 
     async saveToken (userId : number, refreshToken : string) : Promise<UserToken> {
         const tokenData = await UserToken.findOne({ where: { userId : +userId } });

@@ -31,7 +31,6 @@ class TournamentController {
     async create  (req : Request, res : Response, next : NextFunction) {
         try {
             const tournamentDto = new TournamentDto(req.body.name,req.body.address, req.body.userId);
-            console.log(tournamentDto);
             const team = await tournamentService.create({...tournamentDto});
             return  res.json(team);
         }

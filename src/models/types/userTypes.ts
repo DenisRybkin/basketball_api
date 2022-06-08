@@ -8,8 +8,8 @@ export enum UserGenderType {
     woman
 }
 export enum UserRoleTypes {
-    guest,
-    participant,
-    organizer,
-    admin
+    guest = "guest",
+    participant = "guest",
+    organizer = "organizer",
+    admin = "admin",
 }
