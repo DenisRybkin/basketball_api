@@ -42,7 +42,7 @@ export class UserController {
     async remove (req : Request, res : Response, next : NextFunction) {
         try {
             const deletingUserId = getIdFromReq(req);
-            if(!deletingUserId)  ApiError.BadRequest("нема айдишника");
+            if(!deletingUserId) ApiError.BadRequest("нема айдишника");
             const deletedId = await userService.remove(+deletingUserId);
             res.json(deletedId);
         } catch (e) {

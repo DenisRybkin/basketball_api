@@ -1,10 +1,13 @@
 import {Model, Optional} from "sequelize";
 import {Location} from "./location";
+import {TeamInTournament} from "./teamInTournament";
 
 export interface GameAttrs {
     id : number,
     team1Id : number;
     team2Id : number;
+    team1 ?: TeamInTournament;
+    team2 ?: TeamInTournament;
     countPointsTeam1 : number;
     countPointsTeam2 : number;
     winningTeamId : number;

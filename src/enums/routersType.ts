@@ -16,6 +16,7 @@ export enum TeamRoute {
     getAll = "/team",
     getById = "/team/:id",
     create = "/team",
+    addToTournament = "/team/add2tournament",
     update = "/team",
     remove = "/team"
 }
@@ -33,4 +34,11 @@ export enum LocationRoute {
     create = "/location",
     update = "/location",
     remove = "/location"
+}
+export enum GameRoute {
+    getAll = "/game",
+    getById = "/game/:id",
+    create = "/game",
+    update = "/game",
+    remove = "/game"
 }

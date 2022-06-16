@@ -19,6 +19,10 @@ class TournamentService {
         return await Tournament.create(tournament);
     };
 
+    // async appendGame (tournamentId : number) {
+    //
+    // }
+
     async update(tournamentId: number, tournament: Tournament): Promise<[affectedCount: number]> {
         return await Tournament.update(
             {...tournament},
@@ -26,8 +30,8 @@ class TournamentService {
         )
     };
 
-    async remove(userId: number): Promise<number> {
-        return await Tournament.destroy({where: {id: userId}})
+    async remove(tournamentId: number): Promise<number> {
+        return await Tournament.destroy({where: {id: tournamentId}})
     };
 }
 

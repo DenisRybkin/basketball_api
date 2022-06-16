@@ -1,10 +1,12 @@
 import {Model, Optional} from "sequelize";
 import {User} from "./user";
+import {TeamInTournament} from "./teamInTournament";
 
 export interface TeamAttrs {
     id : number,
     name : string;
     address : string;
+    teamInTournament ?: TeamInTournament;
     participants ?: User[];
 }
 

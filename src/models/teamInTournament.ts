@@ -1,9 +1,12 @@
 import {Model, Optional} from "sequelize";
+import {Team} from "./team";
 
 export interface TeamInTournamentAttrs {
     id : number,
     teamId : number
     tournamentId : number;
+    team ?: Team;
+
     countWins : number;
     countGames : number;
     countDefeats : number;

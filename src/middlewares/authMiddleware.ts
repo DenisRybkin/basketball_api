@@ -9,10 +9,7 @@ export const AuthMiddleware = (req: Request, res: Response, next: NextFunction) 
     try {
         const accessToken = getToken(req);
         if (!accessToken) next(ApiError.UnauthorizedError());
-        console.log(222222222222222);
         const validToken = tokenService.validateAccessToken(accessToken);
-
-
         if (!validToken) next(ApiError.UnauthorizedError());
 
         next();

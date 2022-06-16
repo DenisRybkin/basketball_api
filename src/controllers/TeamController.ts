@@ -8,8 +8,8 @@ class TeamController {
     async getAll (req : Request, res : Response, next : NextFunction) {
         try {
             // обращаемся к нашему сервису, который отдаёт все команды
-            const users = await teamService.getAll();
-            res.json(users)
+            const teams = await teamService.getAll();
+            res.json(teams)
         } catch (e) {
             next(e);
         }
@@ -27,13 +27,23 @@ class TeamController {
         }
     }
 
-    async create  (req : Request, res : Response, next : NextFunction) {
+    async create (req : Request, res : Response, next : NextFunction) {
         try {
             const teamDto = new TeamDto(req.body.name,req.body.address);
             const team = await teamService.create(teamDto);
             res.json(team);
         }
         catch (e) {
+            next(e)
+        }
+    }
+
+    async addToTournament (req : Request, res : Response, next : NextFunction) {
+        try {
+            const {teamId, tournamentId} = req.body
+            const teamInTournament = await teamService.addToTournament(teamId,tournamentId);
+            res.json(teamInTournament);
+        } catch (e) {
             next(e)
         }
     }

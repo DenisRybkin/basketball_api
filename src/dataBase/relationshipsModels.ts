@@ -10,20 +10,20 @@ export async function relatingModels () {
    await User.hasMany(Tournament, {foreignKey : 'userId'});
    await Tournament.belongsTo(User, {foreignKey : 'userId'});
 
-   await Team.hasMany(TeamInTournament,{ foreignKey : 'teamId'});
-   await TeamInTournament.belongsTo(Team, { foreignKey : 'teamId'});
+   await Team.hasMany(TeamInTournament,{ foreignKey : 'teamId', as : 'team'});
+   await TeamInTournament.belongsTo(Team, { foreignKey : 'teamId', as : 'team'});
 
    await Tournament.hasMany(TeamInTournament, { foreignKey : 'tournamentId' });
-   await TeamInTournament.belongsTo(Tournament, { foreignKey : 'tournamentId' });
+   await TeamInTournament.belongsTo(Tournament, { foreignKey : 'tournamentId', as : "teamInTournament" });
 
    await Tournament.hasMany(Game, { foreignKey : 'tournamentId', as : 'games'});
    await Game.belongsTo(Tournament, { foreignKey : 'tournamentId'});
 
    await TeamInTournament.hasMany(Game, { foreignKey : 'team1Id'});
-   await Game.belongsTo(TeamInTournament, { foreignKey : 'team1Id'});
+   await Game.belongsTo(TeamInTournament, { foreignKey : 'team1Id', as : 'team1'});
 
    await TeamInTournament.hasMany(Game, { foreignKey : 'team2Id'});
-   await Game.belongsTo(TeamInTournament, { foreignKey : 'team2Id'});
+   await Game.belongsTo(TeamInTournament, { foreignKey : 'team2Id', as : 'team2'});
 
    await TeamInTournament.hasMany(Game, { foreignKey : 'winningTeamId'});
    await Game.belongsTo(TeamInTournament, { foreignKey : 'winningTeamId'});
