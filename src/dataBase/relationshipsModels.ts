@@ -8,7 +8,7 @@ export async function relatingModels () {
    await User.belongsTo(Team, { foreignKey : "teamId", as : 'userTeam'});
 
    await User.hasMany(Tournament, {foreignKey : 'userId'});
-   await Tournament.belongsTo(User, {foreignKey : 'userId'});
+   await Tournament.belongsTo(User, {foreignKey : 'userId', as : "creator"});
 
    await Team.hasMany(TeamInTournament,{ foreignKey : 'teamId', as : 'tournamentTeam'});
    await TeamInTournament.belongsTo(Team, { foreignKey : 'teamId', as : 'tournamentTeam'});

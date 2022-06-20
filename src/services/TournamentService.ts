@@ -13,7 +13,7 @@ class TournamentService {
             where: {id: +id},
             include: [
                 {model: Game, isSelfAssociation: true, as: 'games'},
-                // {model: User, identifier: "userId", as: 'creator'},
+                {model: User, isSelfAssociation: true, as: 'creator'},
             ]
         });
     };
