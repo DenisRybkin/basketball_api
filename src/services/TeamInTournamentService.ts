@@ -1,4 +1,4 @@
-import {TeamInTournament} from "../models";
+import {Team, TeamInTournament} from "../models";
 import {TeamInTournamentDto} from "../dtos/TeamInTournamentDto";
 import {ApiError} from "../exceptions/apiError";
 
@@ -11,6 +11,14 @@ class TeamInTournamentService {
         } catch (e) {
             throw ApiError.BadRequest(`данная команда с id ${teamId} не найдена`)
         }
+    }
+
+    async getAll() {
+        return await TeamInTournament.findAll({include : [{model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }]});
+    }
+
+    async getAllByIdTournament(tournamentId : number) {
+        return await TeamInTournament.findAll({where : {tournamentId},include : [{model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }]});
     }
 
     async getTeamId(teamId : number, tournamentId : number) : Promise<number | null> {

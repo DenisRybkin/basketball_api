@@ -8,6 +8,7 @@ import {config} from "./config";
 import {TournamentRouter} from "./routes/TournamentRouter";
 import {LocationRouter} from "./routes/LocationRouter";
 import {GameRouter} from "./routes/GameRouter";
+import {TeamInTournamentRouter} from "./routes/TeamInTournamentRouter";
 
 export class App {
     private static _instance: App;
@@ -52,6 +53,7 @@ export class App {
         this._app.use(`${this._prefix}`, TournamentRouter);
         this._app.use(`${this._prefix}`, LocationRouter);
         this._app.use(`${this._prefix}`, GameRouter);
+        this._app.use(`${this._prefix}`,TeamInTournamentRouter);
     };
 
     public async init(): Promise<void> {

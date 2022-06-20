@@ -1,4 +1,5 @@
 import {LocationRouter} from "../routes/LocationRouter";
+import {TeamInTournamentRouter} from "../routes/TeamInTournamentRouter";
 
 export enum AuthRoute {
     login = "/login",
@@ -41,4 +42,8 @@ export enum GameRoute {
     create = "/game",
     update = "/game",
     remove = "/game"
+}
+
+export enum TeamInTournamentRoute {
+    getAll = "/teamInTournament"
 }
