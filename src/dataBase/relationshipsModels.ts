@@ -5,7 +5,7 @@ import {Team, User,Game, TeamInTournament,Tournament,Location,UserToken} from ".
 export async function relatingModels () {
 
    await Team.hasMany(User, { foreignKey : "teamId", as : "participants"});
-   await User.belongsTo(Team, { foreignKey : "teamId"});
+   await User.belongsTo(Team, { foreignKey : "teamId", as : 'userTeam'});
 
    await User.hasMany(Tournament, {foreignKey : 'userId'});
    await Tournament.belongsTo(User, {foreignKey : 'userId'});

@@ -18,7 +18,9 @@ class AuthController extends CookieControllerBase  {
     async login (req : Request, res : Response, next : NextFunction) {
         try {
             const {email, password} = req.body;
+            console.log(1);
             const userData = await userService.login(email, password);
+            console.log(2);
             this.setCookie(res,"refreshToken",userData.tokens.refreshToken);
             return res.json(userData);
         } catch (e) {
@@ -29,9 +31,9 @@ class AuthController extends CookieControllerBase  {
     async logout (req : Request, res : Response, next : NextFunction) {
         try {
             const {refreshToken} = req.cookies;
-            const token = await userService.logout(refreshToken);
+            // const token = await userService.logout(refreshToken);
             this.clearCookie(res,"refreshToken")
-            return res.json(token)
+            return res.json("Успех")
         } catch (e) {
             next(e.message);
         }

@@ -1,4 +1,4 @@
-import {User} from "../models";
+import {Team, User} from "../models";
 import bcrypt from 'bcrypt';
 import {tokenService} from "./TokenService";
 import {UserTokenDto} from "../dtos/UserTokenDto";
@@ -9,9 +9,9 @@ import {ApiError} from "../exceptions/apiError";
 class UserService {
 
     async refreshToken (email : string, firstName : string,role : number, userId : number) : Promise<TokensDto> {
-        const userTokenDto = new UserTokenDto(email,firstName,role)
+        const userTokenDto = new UserTokenDto(email,firstName,role);
         const tokens = tokenService.generateTokens({...userTokenDto});
-        await tokenService.saveToken(userId, tokens.refreshToken);
+        // await tokenService.saveToken(userId, tokens.refreshToken);
         return tokens;
     }
 
@@ -21,6 +21,16 @@ class UserService {
 
     async getById (id ?: number) : Promise<User | null> {
         return await User.findByPk(+id);
+    };
+
+    async getAllWithTeam () : Promise<User[] | null> {
+        return await User.findAll({include: [
+                {model: Team, identifier: "teamId", as: 'userTeam'}]});
+    };
+
+    async getByIdWithTeam (id ?: number) : Promise<User | null> {
+        return await User.findOne({where : {id}, include: [
+                {model: Team, identifier: "teamId", as: 'userTeam'}]});
     };
 
 
@@ -62,9 +72,9 @@ class UserService {
         return {user : candidate, tokens};
     };
 
-    async logout (refreshToken : string) : Promise<number> {
-        return await tokenService.removeToken(refreshToken);
-    };
+    // async logout (refreshToken : string) : Promise<number> {
+    //     return await tokenService.removeToken(refreshToken);
+    // };
 
     async refresh(refreshToken : string) {
         if(!refreshToken) throw ApiError.UnauthorizedError();

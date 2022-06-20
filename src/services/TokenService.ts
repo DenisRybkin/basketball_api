@@ -29,14 +29,14 @@ class TokenService{
     }
 
 
-    async saveToken (userId : number, refreshToken : string) : Promise<UserToken> {
-        const tokenData = await UserToken.findOne({ where: { userId : +userId } });
-        if (tokenData) {
-            tokenData.refreshToken = refreshToken;
-            return tokenData.save();
-        }
-        return await UserToken.create({userId, refreshToken});
-    }
+    // async saveToken (userId : number, refreshToken : string) : Promise<UserToken> {
+    //     const tokenData = await UserToken.findOne({ where: { userId : +userId } });
+    //     if (tokenData) {
+    //         tokenData.refreshToken = refreshToken;
+    //         return tokenData.save();
+    //     }
+    //     return await UserToken.create({userId, refreshToken});
+    // }
 
     validateAccessToken(token : string) : string | jwt.JwtPayload | null {
         try {
@@ -54,9 +54,9 @@ class TokenService{
         }
     };
 
-    async removeToken (refreshToken : string) : Promise<number> {
-        return await UserToken.destroy({where : {refreshToken}});
-    }
+    // async removeToken (refreshToken : string) : Promise<number> {
+    //     return await UserToken.destroy({where : {refreshToken}});
+    // }
 
     async findToken(refreshToken : string) {
         return await UserToken.findOne({ where : {refreshToken}});
