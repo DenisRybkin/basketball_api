@@ -2,17 +2,18 @@ import {Game, Team, TeamInTournament} from "../models";
 import {GameDto} from "../dtos/GameDto";
 import {GameAttrs} from "../models/game";
 import {teamInTournamentService} from "./TeamInTournamentService";
+import {GameFilters} from "../controllers/filters/gameFilters";
 
 class GameService {
 
-    async getAll(): Promise<GameAttrs[]> {
-        return await Game.findAll( {include: [
+    async getAll(params?: GameFilters): Promise<GameAttrs[]> {
+        return await Game.findAll( {where : {...params},include: [
                 {model: TeamInTournament, as: 'team1',identifier : 'team1Id', include : [
-                    {model : Team, isSelfAssociation: true, as : 'team',identifier : 'teamId' }
+                    {model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }
                     ]
                 },
                 {model: TeamInTournament, as: 'team2',identifier : 'team2Id', include : [
-                    {model : Team, isSelfAssociation: true, as : 'team',identifier : 'teamId' }
+                    {model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }
                     ]}
             ]});
     };
@@ -21,11 +22,11 @@ class GameService {
         return await Game.findOne({
             where: {id: +id},
             include: [{model: TeamInTournament, as: 'team1',identifier : 'team1Id', include : [
-                    {model : Team, isSelfAssociation: true, as : 'team',identifier : 'teamId' }
+                    {model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }
                 ]
             },
                 {model: TeamInTournament, as: 'team2',identifier : 'team2Id', include : [
-                        {model : Team, isSelfAssociation: true, as : 'team',identifier : 'teamId' }
+                        {model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }
                     ]}]
         });
     };

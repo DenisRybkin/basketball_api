@@ -3,14 +3,21 @@ import {getIdFromParams, getIdFromReq} from "../utils/getIdFromReq";
 import {ApiError} from "../exceptions/apiError";
 import {gameService} from "../services/GameService";
 import {GameDto} from "../dtos/GameDto";
+import {GameFilters} from "./filters/gameFilters";
 
 
 export class GameController {
     async getAll (req : Request, res : Response, next : NextFunction) {
         try {
             // обращаемся к нашему сервису, который отдаёт все команды
-            const games = await gameService.getAll();
-            res.json(games)
+            let {team1Id,team2Id,tournamentId} : GameFilters = req.query;
+
+            const games = await gameService.getAll({
+                team1Id : team1Id ? +team1Id : undefined,
+                team2Id : team2Id ? +team2Id : undefined,
+                tournamentId : tournamentId ? +tournamentId : undefined
+            });
+            res.json(games);
         } catch (e) {
             next(e);
         }
@@ -42,6 +49,7 @@ export class GameController {
     async update (req : Request, res : Response, next : NextFunction) {
         try {
             const gameId = getIdFromReq(req);
+            console.log(gameId);
             const newGame = req.body;
             if(!gameId) ApiError.BadRequest("нема айдишника");
             const updatedId =  await gameService.update(+gameId,newGame);
