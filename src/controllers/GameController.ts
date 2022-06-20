@@ -10,13 +10,9 @@ export class GameController {
     async getAll (req : Request, res : Response, next : NextFunction) {
         try {
             // обращаемся к нашему сервису, который отдаёт все команды
-            let {team1Id,team2Id,tournamentId} : GameFilters = req.query;
+            const params : GameFilters = req.query;
 
-            const games = await gameService.getAll({
-                team1Id : team1Id ? +team1Id : undefined,
-                team2Id : team2Id ? +team2Id : undefined,
-                tournamentId : tournamentId ? +tournamentId : undefined
-            });
+            const games = await gameService.getAll(params);
             res.json(games);
         } catch (e) {
             next(e);

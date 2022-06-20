@@ -3,19 +3,29 @@ import {GameDto} from "../dtos/GameDto";
 import {GameAttrs} from "../models/game";
 import {teamInTournamentService} from "./TeamInTournamentService";
 import {GameFilters} from "../controllers/filters/gameFilters";
+import {WhereOptions} from "sequelize";
 
 class GameService {
 
     async getAll(params?: GameFilters): Promise<GameAttrs[]> {
-        return await Game.findAll( {where : {...params},include: [
+// where : {team1Id: undefined, team2Id : undefined, tournamentId :undefined},
+        const includeParams = [
                 {model: TeamInTournament, as: 'team1',identifier : 'team1Id', include : [
-                    {model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }
+                        {model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }
                     ]
                 },
                 {model: TeamInTournament, as: 'team2',identifier : 'team2Id', include : [
-                    {model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }
+                        {model : Team, isSelfAssociation: true, as : 'tournamentTeam',identifier : 'teamId' }
                     ]}
-            ]});
+            ]
+
+        const whereParams : WhereOptions<GameAttrs> = {};
+
+        if(params.team1Id) whereParams.team1Id = +params.team1Id;
+        if(params.team2Id) whereParams.team2Id = +params.team2Id;
+        if(params.tournamentId) whereParams.tournamentId = +params.tournamentId
+
+        return await Game.findAll( {where : whereParams,include : includeParams});
     };
 
     async getById(id ?: number): Promise<GameAttrs> {

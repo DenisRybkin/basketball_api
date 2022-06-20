@@ -1,6 +1,6 @@
 import {Tournament, TournamentAttrs} from "../models/tournament";
 import {TournamentDto} from "../dtos/TournamentDto";
-import {Game} from "../models";
+import {Game, User} from "../models";
 
 class TournamentService {
 
@@ -11,7 +11,10 @@ class TournamentService {
     async getById(id ?: number): Promise<TournamentAttrs | null> {
         return await Tournament.findOne({
             where: {id: +id},
-            include: [{model: Game, isSelfAssociation: true, as: 'games'}]
+            include: [
+                {model: Game, isSelfAssociation: true, as: 'games'},
+                // {model: User, identifier: "userId", as: 'creator'},
+            ]
         });
     };
 
