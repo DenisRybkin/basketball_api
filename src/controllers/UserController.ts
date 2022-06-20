@@ -8,10 +8,8 @@ export class UserController {
     async getAll (req : Request, res : Response, next : NextFunction) {
         try {
             // обращаемся к нашему сервису, который отдаёт всех пользователй
-            const withTeam  = req.query.withTeam=== "true" ?? false;
-            let users
-            if(withTeam) users = await userService.getAllWithTeam();
-            else users = await userService.getAll();
+            const withTeam  = req.query.withTeam === "true" ?? false;
+            const users = withTeam ? await userService.getAllWithTeam() : await userService.getAll();
             res.json(users)
         } catch (e) {
             next(e);
@@ -23,9 +21,7 @@ export class UserController {
             const id : number = getIdFromParams(req);
             const withTeam  = req.query.withTeam=== "true" ?? false;
             if(!id) throw ApiError.BadRequest("нема айдишника");
-            let user
-            if(withTeam) user = await userService.getByIdWithTeam(id);
-            else user = await userService.getById(id);
+            const user = withTeam ?await userService.getByIdWithTeam(id) : await userService.getById(id);
             if(!user) throw ApiError.NotFound();
             res.json(user);
         } catch (e) {

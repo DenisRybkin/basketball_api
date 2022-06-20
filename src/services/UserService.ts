@@ -64,7 +64,7 @@ class UserService {
         const candidate = await User.findOne({where : { email }});
         if(!candidate) throw ApiError.BadRequest(`пользователь с email ${email} не был найден`)
 
-        const isPassEqual = bcrypt.compare(password,candidate.password);
+        const isPassEqual = await bcrypt.compare(password,candidate.password);
         if(!isPassEqual) throw ApiError.BadRequest(`неверный пароль`);
 
         const tokens = await this.refreshToken(email,candidate.firstName,candidate.id,candidate.role);

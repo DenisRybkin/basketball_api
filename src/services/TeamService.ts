@@ -1,24 +1,39 @@
-import {Team, TeamInTournament, User} from "../models";
+import {Team, TeamInTournament, Tournament, User} from "../models";
 import {TeamAttrs} from "../models/team";
 import {TeamDto} from "../dtos/TeamDto";
 import {ApiError} from "../exceptions/apiError";
 import {teamInTournamentService} from "./TeamInTournamentService";
+import {TeamFilters} from "../controllers/filters/teamFilters";
+import {noRawAttributes} from "sequelize/types/utils/deprecations";
 
 class TeamService {
 
     async getAll(): Promise<TeamAttrs[] | null> {
         return await Team.findAll({include: [
                 {model: User, isSelfAssociation: true, as: 'participants'},
-                {model: TeamInTournament, isSelfAssociation: true, as: 'teamInTournament'}
+                {model: TeamInTournament, isSelfAssociation: true, as: 'tournamentTeam'}
             ]})
     };
+
+    async getTeamsByTournamentId(tournamentId : number) {
+        const teams : TeamAttrs[] = [];
+        const getAll = async (teamsId : number[]) => {
+            for (const i of teamsId) {
+                const team = await this.getById(+i);
+                teams.push(team)
+            }
+        }
+        const necessaryTeams = await TeamInTournament.findAll({where : {tournamentId}});
+        await getAll(necessaryTeams.map(item => item.teamId));
+        return teams;
+    }
 
     async getById(id ?: number): Promise<TeamAttrs | null> {
         return await Team.findOne({
             where: {id: +id},
             include: [
                 {model: User, isSelfAssociation: true, as: 'participants'},
-                {model: TeamInTournament, isSelfAssociation: true}
+                {model: TeamInTournament, isSelfAssociation: true, as: 'tournamentTeam'}
             ]
         });
     };

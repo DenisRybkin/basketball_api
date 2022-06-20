@@ -18,9 +18,7 @@ class AuthController extends CookieControllerBase  {
     async login (req : Request, res : Response, next : NextFunction) {
         try {
             const {email, password} = req.body;
-            console.log(1);
             const userData = await userService.login(email, password);
-            console.log(2);
             this.setCookie(res,"refreshToken",userData.tokens.refreshToken);
             return res.json(userData);
         } catch (e) {

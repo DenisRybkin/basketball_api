@@ -3,12 +3,17 @@ import {ApiError} from "../exceptions/apiError";
 import {teamService} from "../services";
 import {TeamDto} from "../dtos/TeamDto";
 import {getIdFromReq, getIdFromParams} from "../utils/getIdFromReq";
+import {TeamFilters} from "./filters/teamFilters";
 
 class TeamController {
     async getAll (req : Request, res : Response, next : NextFunction) {
         try {
             // обращаемся к нашему сервису, который отдаёт все команды
-            const teams = await teamService.getAll();
+            const filterParams : TeamFilters = req.query;
+            console.log(filterParams);
+            const teams = filterParams.tournamentId
+                ? await teamService.getTeamsByTournamentId(+filterParams.tournamentId)
+                : await teamService.getAll();
             res.json(teams)
         } catch (e) {
             next(e);
