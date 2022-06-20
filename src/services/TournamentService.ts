@@ -5,7 +5,7 @@ import {Game, User} from "../models";
 class TournamentService {
 
     async getAll(): Promise<TournamentAttrs[] | null> {
-        return await Tournament.findAll({include: [{model: Game, isSelfAssociation: true, as: 'games'}]})
+        return await Tournament.findAll({include: [{model: Game, isSelfAssociation: true, as: 'games'},{model: User, isSelfAssociation: true, as: 'creator'}]})
     };
 
     async getById(id ?: number): Promise<TournamentAttrs | null> {
